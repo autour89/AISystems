@@ -3,11 +3,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Laba1.ViewModels;
 
-public class BaseViewModel
+public abstract partial class BaseViewModel : ObservableObject
 {
     public BaseViewModel()
     {
     }
+
 }
-
-

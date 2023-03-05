@@ -3,13 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:Laba2.ViewModels"
              xmlns:model="clr-namespace:Laba2.Models"
-             xmlns:local="clr-namespace:Laba2.Converters"
+             xmlns:converter="clr-namespace:Laba2.Converters"
+             xmlns:lang="clr-namespace:Laba2.Resources.Languages"
              x:DataType="viewmodel:MainViewModel"
-             x:Class="Laba2.MainPage"
+             x:Class="Laba2.Views.MainPage"
              Shell.NavBarIsVisible="False">
-
+    
     <ContentPage.Resources>
-        <local:BoolToFitnessBackgroundConverter x:Key="boolToColor" />
+        <converter:BoolToFitnessBackgroundConverter x:Key="boolToColor" />
     </ContentPage.Resources>
 
     <Grid>
@@ -22,7 +23,7 @@
 
             <StackLayout>
 
-                <Label Text="Size of population and generation :" FontSize="Medium" Padding="10,0,0,10"/>
+                <Label Text="{x:Static lang:Locals.SizeTitle}" FontSize="Medium" Padding="10,0,0,10"/>
 
                 <Picker Title="Choose population size"
                         HorizontalOptions="Start"
@@ -42,7 +43,7 @@
             </StackLayout>
 
             <StackLayout Margin="50,0,0,0">
-                <Label Text="Selection by :" Padding="10,0,0,10" FontSize="Medium"/>
+                <Label Text="{x:Static lang:Locals.SelectionTitle}" Padding="10,0,0,10" FontSize="Medium"/>
                 <RadioButton Padding="10,0,0,0" Content="Roulette" IsChecked="{Binding IsRoulette}" />
                 <RadioButton Padding="10,0,0,0" Content="Tournament" IsChecked="{Binding IsTournament}" />
             </StackLayout>
@@ -128,13 +129,13 @@
         <Button Grid.Row="1"
                 VerticalOptions="End" HorizontalOptions="Center"
                 Margin="20"
-                Text="Run algorithm"
+                Text="{x:Static lang:Locals.RunAlgorithmTitle}"
                 Command="{Binding RunCommand}"
                 IsEnabled="{Binding CanRun}"
                 SemanticProperties.Hint="Calculate genetice algorithm" />
 
 
-        <Label Grid.Row="2" IsVisible="{Binding ShowEmpty}" Text="Empty"
+        <Label Grid.Row="2" IsVisible="{Binding ShowEmpty}" Text="{x:Static lang:Locals.EmptyTitle}"
                FontSize="Large" FontAttributes="Bold"
                Padding="20" HorizontalOptions="Center" VerticalOptions="Center"/>
 
@@ -146,7 +147,7 @@
                                  Color="Black"
                                  VerticalOptions="CenterAndExpand" 
                                  HorizontalOptions="CenterAndExpand" />
-            <Label Text="Calculating" FontSize="Header" Padding="0,20,0,0"/>
+            <Label Text="{x:Static lang:Locals.CalculatingTitle}" FontSize="Header" Padding="0,20,0,0"/>
         </StackLayout>
 
     </Grid>

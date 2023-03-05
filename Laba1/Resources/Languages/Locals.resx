@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="TableTitle" xml:space="preserve">
+    <value>Table</value>
+    <comment />
+  </data>
+	<data name="CleaningAgentTitle" xml:space="preserve">
+    <value>Cleaning agent</value>
+    <comment />
+  </data>
+	<data name="NoTablesTitle" xml:space="preserve">
+    <value>No Tables</value>
+    <comment />
+  </data>
+	<data name="MakeOrdersTitle" xml:space="preserve">
+    <value>Make orders</value>
+    <comment />
+  </data>
+	<data name="CleanTablesTitle" xml:space="preserve">
+    <value>Clean tables</value>
+    <comment />
+  </data>
+	<data name="ResetTitle" xml:space="preserve">
+    <value>Reset</value>
+    <comment />
+  </data>
+	<data name="TableNumberTitle" xml:space="preserve">
+    <value>Table number</value>
+    <comment />
+  </data>
+	<data name="SizeTitle" xml:space="preserve">
+    <value>Size</value>
+    <comment />
+  </data>
+	<data name="PriorityTitle" xml:space="preserve">
+    <value>Priority</value>
+    <comment />
+  </data>
+	<data name="CleanTitle" xml:space="preserve">
+    <value>Clean</value>
+    <comment />
+  </data>
+	<data name="DirtyTitle" xml:space="preserve">
+    <value>Dirty</value>
+    <comment />
+  </data>
+</root>

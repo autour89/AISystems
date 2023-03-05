@@ -56,12 +56,23 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="5.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Converters\" />
+	  <Folder Include="Converters\" />
+	  <Folder Include="Views\" />
+	  <Folder Include="Resources\Languages\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Converters\" />
+	  <EmbeddedResource Update="Resources\Languages\Locals.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Locals.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <BundleResource Include="Resources\Languages\Locals.Designer.cs">
+	    <DependentUpon>Locals.resx</DependentUpon>
+	  </BundleResource>
 	</ItemGroup>
 </Project>

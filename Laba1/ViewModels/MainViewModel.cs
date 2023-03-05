@@ -1,113 +1,94 @@
-﻿
-using System;
-using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Laba1.Models;
+using Laba1.Resources.Languages;
+using Laba1.Services;
+using Microsoft.Extensions.Localization;
 
 namespace Laba1.ViewModels;
 
-[INotifyPropertyChanged]
-public partial class MainViewModel : BaseViewModel
+public sealed partial class MainViewModel : BaseViewModel
 {
-    const string tableTitle = "Table";
-    const int tablesCount = 25;
-    List<Table> tables;
-    Random random;
+    readonly ICleanupService cleanupService;
 
+    public IStringLocalizer<Locals> StringLocalizer { get; }
 
-    [ObservableProperty, NotifyPropertyChangedFor(nameof(FullName))]
-    string firstName = string.Empty;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsEmpty))]
+    ObservableCollection<Table> tables;
 
-    [ObservableProperty, NotifyPropertyChangedFor(nameof(FullName))]
-    string lastName = string.Empty;
+    public bool IsEmpty => !Tables.Any();
 
-    public string FullName => $"{FirstName} {LastName}";
-
-
-    public MainViewModel()
+    public MainViewModel(ICleanupService cleanupService, IStringLocalizer<Locals> stringLocalizer)
     {
+        this.cleanupService = cleanupService;
+        StringLocalizer = stringLocalizer;
+        this.cleanupService.OnFinish = OnClaenFinish;
         tables = new();
-        random = new();
-
-        CreateTableList(tablesCount);
-    }
-
-    [RelayCommand]
-    async Task Cleanup()
-    {
-
-        await Task.Delay(TimeSpan.FromSeconds(2));
-
-
-        Debug.WriteLine(FullName);
     }
 
     [RelayCommand]
     async Task MakeOrders()
     {
-        CreateTableList(tablesCount);
+        try
+        {
+            var tables = await cleanupService.MakeOrders();
 
-        await Task.Delay(TimeSpan.FromSeconds(2));
+            Tables = tables.ToObservableCollection();
+        }
+        catch (Exception)
+        {
+            await Shell.Current.DisplayAlert(
+                "Error",
+                "An error has occurred while making orders.",
+                "Ok"
+            );
+        }
     }
 
-    void CreateTableList(int numTables)
+    [RelayCommand]
+    async Task Cleanup()
     {
-        for (int tableNum = 0; tableNum < numTables; tableNum++)
+        try
         {
-            tables.Add(new Table
+            await Task.Run(() =>
             {
-                Name = $"{tableTitle} {tableNum}",
-                UsageFrequency = random.Next(1, 101),
-                Size = random.Next(1, 101)
+                Tables = Tables
+                    .OrderBy(x => x.IsClean)
+                    .ThenByDescending(y => y.Priority)
+                    .ToObservableCollection();
             });
+
+            await cleanupService.Cleanup();
         }
-        CalculateCleanupOrder();
+        catch (Exception)
+        {
+            await Shell.Current.DisplayAlert(
+                "Error",
+                "An error has occurred while making a cleaning up.",
+                "Ok"
+            );
+        }
     }
 
-    public PriorityQueue<Table> CalculateCleanupOrder(List<Table> tables)
+    [RelayCommand]
+    async Task Reset()
     {
-        // Create a priority queue to order the cleanup of tables
-        PriorityQueue<Table> queue = new PriorityQueue<Table>((x, y) =>
+        await Task.Run(() =>
         {
-            double xPriority = HeuristicFunction(x.Name, x.UsageFrequency, x.Size);
-            double yPriority = HeuristicFunction(y.Name, y.UsageFrequency, y.Size);
-            return yPriority.CompareTo(xPriority); // Sort in descending order of priority
+            cleanupService.Reset();
+
+            Tables = cleanupService.Tables.ToObservableCollection();
         });
+    }
 
-        // Enqueue each table in the priority queue
-        foreach (Table table in tables)
+    void OnClaenFinish(bool isFinished)
+    {
+        MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            queue.Enqueue(table);
-        }
-
-        return queue;
-    }
-
-    void CalculateCleanupOrder()
-    {
-        tables.ForEach(table => table.Priority = HeuristicFunction(table.Name, table.UsageFrequency, table.Size));
-        tables.OrderByDescending(x => x.Priority);
-    }
-
-    void Clear()
-    {
-
-    }
-
-    void Reset()
-    {
-        tables.Clear();
-        CreateTableList(tablesCount);
-    }
-
-    public double HeuristicFunction(string tableName, int usage, int size)
-    {
-        // Define a mapping from table name to priority based on usage and size
-        Random random = new(tableName.GetHashCode());
-        int usageFactor = random.Next(1, 11); // Assign a random priority based on usage
-        int sizeFactor = random.Next(1, 11); // Assign a random priority based on size
-        double priority = Math.Sqrt(usage * usageFactor + size * sizeFactor);
-        return priority;
+            await Shell.Current.DisplayAlert("Finished", "All tables are cleaned up.", "Ok");
+        });
     }
 }

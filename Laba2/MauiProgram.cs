@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui;
 using Laba2.Services;
 using Laba2.ViewModels;
+using Laba2.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -46,6 +47,8 @@ public static class MauiProgram
     static MauiAppBuilder RegisterAppServices(this MauiAppBuilder mauiAppBuilder)
     {
         mauiAppBuilder.Services.AddSingleton<IGeneticAlgorithm, GeneticAlgorithm>();
+
+        mauiAppBuilder.Services.AddLocalization();
 
         return mauiAppBuilder;
     }

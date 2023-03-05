@@ -5,20 +5,21 @@ using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Laba2.Models;
+using Laba2.Resources.Languages;
 using Laba2.Services;
+using Microsoft.Extensions.Localization;
 
 namespace Laba2.ViewModels;
 
-
-[INotifyPropertyChanged]
-public partial class MainViewModel : BaseViewModel
+public sealed partial class MainViewModel : BaseViewModel
 {
     readonly IGeneticAlgorithm geneticAlgorithm;
+    readonly IStringLocalizer<Locals> stringLocalizer;
 
-    public MainViewModel(IGeneticAlgorithm geneticAlgorithm)
+    public MainViewModel(IGeneticAlgorithm geneticAlgorithm, IStringLocalizer<Locals> stringLocalizer)
     {
         this.geneticAlgorithm = geneticAlgorithm;
-
+        this.stringLocalizer = stringLocalizer;
         Initialise();
     }
 
@@ -63,7 +64,7 @@ public partial class MainViewModel : BaseViewModel
         {
             IsBusy = true;
 
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
                 Generations?.Clear();
                 int populationSize = SelectedPopulationNumber?.Value ?? 2;
