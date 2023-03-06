@@ -10,5 +10,5 @@ public interface ICleanupService
     Task Cleanup();
     void Reset();
     IReadOnlyList<Table> Tables { get; }
-    Action<bool>? OnFinish { get; set; }
+    Action<bool, int>? OnFinish { get; set; }
 }

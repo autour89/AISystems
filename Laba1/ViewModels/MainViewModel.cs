@@ -84,11 +84,14 @@ public sealed partial class MainViewModel : BaseViewModel
         });
     }
 
-    void OnClaenFinish(bool isFinished)
+    void OnClaenFinish(bool isFinished, int count)
     {
-        MainThread.InvokeOnMainThreadAsync(async () =>
+        if (isFinished)
         {
-            await Shell.Current.DisplayAlert("Finished", "All tables are cleaned up.", "Ok");
-        });
+            MainThread.InvokeOnMainThreadAsync(async () =>
+            {
+                await Shell.Current.DisplayAlert("Finished", $"{count} tables are cleaned up.", "Ok");
+            });
+        }
     }
 }

@@ -12,7 +12,7 @@ public class CleanupService : ICleanupService
     private Random random;
     List<Table> tables;
 
-    public Action<bool>? OnFinish { get; set; }
+    public Action<bool, int>? OnFinish { get; set; }
 
     public IReadOnlyList<Table> Tables => tables;
 
@@ -68,7 +68,7 @@ public class CleanupService : ICleanupService
                 table.IsClean = true;
             }
 
-            OnFinish?.Invoke(true);
+            OnFinish?.Invoke(true, count);
         });
     }
 
