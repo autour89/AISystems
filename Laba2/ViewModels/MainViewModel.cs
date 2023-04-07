@@ -20,7 +20,7 @@ public sealed partial class MainViewModel : BaseViewModel
     {
         this.geneticAlgorithm = geneticAlgorithm;
         this.stringLocalizer = stringLocalizer;
-        Initialise();
+        Initialize();
     }
 
     [ObservableProperty]
@@ -86,7 +86,7 @@ public sealed partial class MainViewModel : BaseViewModel
         }
     }
 
-    void Initialise()
+    void Initialize()
     {
         geneticAlgorithm.OnNextGeneration = NextGeneration;
         Generations = new();
